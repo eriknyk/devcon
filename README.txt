@@ -1,3 +1,11 @@
+============================================================================== 
+ (c) Erik Amaru Ortiz <aortiz.erik at gmail dot com>
+ 
+ For the full copyright and license information, please view the LICENSE
+ file that was distributed with this source code.
+============================================================================== 
+ 
+ 
 This file is for you to describe the devcon application. Typically
 you would include information such as the information below:
 

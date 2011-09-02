@@ -1,5 +1,11 @@
-# -*- coding: utf-8 -*-
-"""Main Controller"""
+# -*- coding: utf-8 -*
+
+"""
+ (c) Erik Amaru Ortiz <aortiz.erik at gmail dot com>
+ 
+ For the full copyright and license information, please view the LICENSE
+ file that was distributed with this source code.
+"""
 
 import os, sys, stat
 import shutil
@@ -205,8 +211,8 @@ class ProblemsController(BaseController):
     @expose()
     def getInput(self, uid):
         problem = DBSession.query(Problems).filter_by(uid=uid).one()
-        path = '/home/erik/tg/tg2env/devcon/devcon/public/files/inputs'
-        file = open(os.path.join(path, problem.input_filename), 'r')       
+        path = os.path.join(os.getcwd(), 'devcon/public/files/inputs')
+        file = open(os.path.join(path, problem.input_filename), 'r')
         
         response.headers['Content-Type'] = "text/plain"
         response.headers['Content-Length'] = os.path.getsize(os.path.join(path, problem.input_filename)) # file size in bytes
@@ -231,10 +237,3 @@ while($a != 0) {
 """
         return dict(page='gs', scode=scode)
 
-
-
-        
-        
-        
-        
-        
