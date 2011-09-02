@@ -63,11 +63,13 @@ class ProblemsController(BaseController):
         """Handle the front-page."""
         problem = DBSession.query(Problems).filter_by(uid=uid).one()
         return dict(page='view', problem=problem)
+        
 
     @expose('devcon.templates.problems.list')
-    def list(self):   
+    def list(self):
         data = DBSession.query(Problems).order_by(Problems.uid)
         return dict(page='list', grid=problems_grid, data=data, request=request)
+
         
     @expose('devcon.templates.problems.submits_list')
     @paginate("data", items_per_page=10)
@@ -84,16 +86,19 @@ class ProblemsController(BaseController):
         
         return dict(page='submits_list', grid=submits_grid, data=data, request=request)
 
+
     @expose('devcon.templates.problems.view')
     def view(self, uid):
         problem = DBSession.query(Problems).filter_by(uid=uid).one()
         return dict(page='view', problem=problem)
+
         
     @expose('devcon.templates.problems.submit_form')
     def submit(self, **kw):
         tmpl_context.form = create_submit_form
         problem = DBSession.query(Problems).filter_by(uid=kw['uid']).one()
         return dict(problem=problem.title, value=kw)
+
         
     @expose('devcon.templates.problems.save')
     #@validate(create_submit_form, error_handler=submit)
@@ -101,7 +106,7 @@ class ProblemsController(BaseController):
         if kw['file_source'] != '':
             """ saving the file """
             file = request.POST['file_source']
-            asset_dirname = '/home/erik/tg/tg2env/devcon/devcon/public/files'
+            asset_dirname = os.path.join(os.getcwd(), 'devcon/public/files')
             
             #real path to store the file by user
             path = os.path.join(asset_dirname, request.identity['user'].user_name)
@@ -136,10 +141,10 @@ class ProblemsController(BaseController):
                 attempt_nro = 1
             
             
-            inputfile_path = os.path.join('/home/erik/tg/tg2env/devcon/devcon/public/files/inputs', problem.input_filename)
+            inputfile_path = os.path.join(os.getcwd(), 'devcon/public/files/inputs', problem.input_filename)
             output_filename = "%s_%d.out" % (problem.code.lower(), problem.serie) 
             gen_output_filename = "%s_%d_%d.out" % (problem.code.lower(), problem.serie, attempt_nro) 
-            outputfile_path = os.path.join('/home/erik/tg/tg2env/devcon/devcon/public/files/outputs', output_filename)
+            outputfile_path = os.path.join(os.getcwd(), 'devcon/public/files/outputs', output_filename)
             tmp_filepath = os.path.join(path, gen_output_filename)
             
             cmd = "%s < %s > %s" % (filepath, inputfile_path, tmp_filepath)
