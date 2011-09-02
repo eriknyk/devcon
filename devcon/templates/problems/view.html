@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude">
+
+  <xi:include href="master.html" />
+
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="content-type" py:replace="''"/>
+  <title>Editing: ${problem.title}</title>
+</head>
+
+<body>
+
+<div class="main_content">
+<div>
+  <center><h1><span py:replace="problem.title"></span></h1></center>
+  <br/>
+
+  <span class="problem_subtitle">Description</span>
+  <span class="problem_text"><pre><div py:replace="problem.text"/></pre></span>
+  
+  <span class="problem_subtitle">Input</span>
+  <span class="problem_text"><pre><span py:replace="problem.input"/></pre></span>
+
+  <span class="problem_subtitle">Output</span>
+  <span class="problem_text"><pre><span py:replace="problem.output"/></pre></span>
+
+  <br/>
+  <table width="100%" border="1" cellpadding="4" cellspacing="0">
+    <tr>
+      <td>Sample Input</td>
+      <td>Sample Output</td>
+    </tr>
+    <tr>
+      <td><pre><span py:replace="problem.sample_input"/></pre></td>
+      <td><pre><span py:replace="problem.sample_output"/></pre></td>
+    </tr>
+  </table>
+
+  <br/>
+  <br/>
+  <a href="/problems/getInput?uid=${problem.uid}">Download input</a> | <a href="/problems/submit?uid=${problem.uid}">Submit Solution</a>
+</div>
+<br/>
+
+
+
+<br/>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,4 @@
+recursive-include devcon/public *
+include devcon/public/favicon.ico
+recursive-include devcon/i18n *
+recursive-include devcon/templates *

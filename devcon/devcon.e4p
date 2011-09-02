@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Project SYSTEM "Project-4.6.dtd">
+<!-- eric4 project file for project devcon -->
+<!-- Saved: 2011-08-31, 14:51:03 -->
+<!-- Copyright (C) 2011 Erik Amaru Ortiz, erik@colosa.com -->
+<Project version="4.6">
+  <Language>en</Language>
+  <ProgLanguage mixed="0">Python</ProgLanguage>
+  <ProjectType>Qt4</ProjectType>
+  <Description></Description>
+  <Version>0.1</Version>
+  <Author>Erik Amaru Ortiz</Author>
+  <Email>erik@colosa.com</Email>
+  <Sources>
+    <Source>controllers/template.py</Source>
+    <Source>controllers/problems.py</Source>
+    <Source>controllers/secure.py</Source>
+    <Source>controllers/root.py</Source>
+    <Source>controllers/error.py</Source>
+    <Source>controllers/__init__.py</Source>
+    <Source>lib/helpers.py</Source>
+    <Source>lib/app_globals.py</Source>
+    <Source>lib/base.py</Source>
+    <Source>lib/__init__.py</Source>
+    <Source>config/app_cfg.py</Source>
+    <Source>config/environment.py</Source>
+    <Source>config/middleware.py</Source>
+    <Source>config/__init__.py</Source>
+    <Source>templates/problems/__init__.py</Source>
+    <Source>templates/__init__.py</Source>
+    <Source>model/problems.py</Source>
+    <Source>model/auth.py</Source>
+    <Source>model/__init__.py</Source>
+    <Source>websetup/schema.py</Source>
+    <Source>websetup/bootstrap.py</Source>
+    <Source>websetup/__init__.py</Source>
+    <Source>tests/models/test_auth.py</Source>
+    <Source>tests/models/__init__.py</Source>
+    <Source>tests/functional/test_root.py</Source>
+    <Source>tests/functional/test_authentication.py</Source>
+    <Source>tests/functional/__init__.py</Source>
+    <Source>tests/__init__.py</Source>
+    <Source>__init__.py</Source>
+  </Sources>
+  <Forms>
+  </Forms>
+  <Translations>
+  </Translations>
+  <Resources>
+  </Resources>
+  <Interfaces>
+  </Interfaces>
+  <Others>
+  </Others>
+  <Vcs>
+    <VcsType>None</VcsType>
+  </Vcs>
+  <FiletypeAssociations>
+    <FiletypeAssociation pattern="*.ui" type="FORMS" />
+    <FiletypeAssociation pattern="*.idl" type="INTERFACES" />
+    <FiletypeAssociation pattern="*.qm" type="TRANSLATIONS" />
+    <FiletypeAssociation pattern="*.ptl" type="SOURCES" />
+    <FiletypeAssociation pattern="*.pyw" type="SOURCES" />
+    <FiletypeAssociation pattern="*.ui.h" type="FORMS" />
+    <FiletypeAssociation pattern="*.ts" type="TRANSLATIONS" />
+    <FiletypeAssociation pattern="*.py" type="SOURCES" />
+    <FiletypeAssociation pattern="*.qrc" type="RESOURCES" />
+  </FiletypeAssociations>
+</Project>
