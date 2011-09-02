@@ -2,4 +2,5 @@
 .gitignore
 *.swp
 *.pyc*
+devcon/public/files/*
 
