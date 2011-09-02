@@ -139,7 +139,7 @@ class ProblemsController(BaseController):
 
             """ saving on db """
             
-            q =  DBSession.query(Submits).filter(Submits.user_id==request.identity['user'].user_id).order_by(desc(Submits.attempt))
+            q =  DBSession.query(Submits).filter(Submits.user_id==request.identity['user'].user_id).filter(Submits.problem_id==problem.uid).order_by(desc(Submits.attempt))
             
             if q.count() > 0:
                 attempt_nro = q[0].attempt + 1
@@ -163,18 +163,24 @@ class ProblemsController(BaseController):
                 test_lines = open(tmp_filepath).readlines()
                 correct_lines = open(outputfile_path).readlines()
                 
-                ok = 1
-                for test, correct in zip(test_lines, correct_lines):
-                    if test != correct:
-                        result = 'wrong answer'
-                        ok = 0
-                        break
-                    else:
-                        len_diff = len(test_lines) - len(correct_lines)
-                        if len_diff <> 0:
+                failed = 0
+                len_diff = len(test_lines) - len(correct_lines)
+
+                if len_diff <> 0:
+                    result = 'wrong answer'
+                    failed = 1
+                else:
+                    for test, correct in zip(test_lines, correct_lines):
+                        if test != correct:
                             result = 'wrong answer'
-                            ok = 0
+                            failed = 1
                             break
+                
+                if failed == 0:
+                    ok = 1
+                else:
+                    ok = 0
+
             else:
                 ok = 0
                 result = 'compilation failed'
