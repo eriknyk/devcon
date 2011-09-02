@@ -14,7 +14,11 @@ class SortableColumn(Column):
     def get_title(self):
         current_ordering = request.GET.get('ordercol')
         if current_ordering and current_ordering[1:] == self.name:
-            current_ordering = '-' if current_ordering[0] == '+' else '+'
+            #current_ordering = '-' if current_ordering[0] == '+' else '+'
+            if current_ordering[0] == '+':
+                current_ordering = '-'
+            else:
+                current_ordering = '+'
         else:
             current_ordering = '+'
         current_ordering += self.name
