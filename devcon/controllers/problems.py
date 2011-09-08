@@ -18,8 +18,6 @@ from tgext.admin.controller import AdminController
 from repoze.what import predicates
 
 from devcon.lib.base import BaseController
-from devcon.model import DBSession, metadata, Problems, Submits
-from devcon import model
 from devcon.controllers.secure import SecureController
 from tg.decorators import paginate
 
@@ -32,6 +30,16 @@ from devcon.controllers.error import ErrorController
 from tw.forms import DataGrid
 from tw.forms.datagrid import Column
 import genshi
+import datetime
+
+from sqlalchemy import asc, desc
+from sqlalchemy.sql.expression import or_
+
+from tg import tmpl_context
+from devcon.widgets.movie_form import create_movie_form
+from devcon.widgets.problem_submit import create_submit_form
+from devcon import model
+from devcon.model import DBSession, metadata, Problems, Submits, Series, Results
 
 
 problems_grid = DataGrid(fields=[
@@ -50,12 +58,6 @@ submits_grid = DataGrid(fields=[
     SortableColumn('Result', 'result')
 ])
 
-import datetime
-from sqlalchemy import asc, desc
-from tg import tmpl_context
-from devcon.widgets.movie_form import create_movie_form
-from devcon.widgets.problem_submit import create_submit_form
-
 
 class ProblemsController(BaseController):
     secc = SecureController()
@@ -73,8 +75,13 @@ class ProblemsController(BaseController):
 
     @expose('devcon.templates.problems.list')
     def list(self):
-        data = DBSession.query(Problems).order_by(Problems.uid)
-        return dict(page='list', grid=problems_grid, data=data, request=request)
+        # getting the current serie of contest
+        serie = DBSession.query(Series).filter_by(current=1).one()
+
+        data = DBSession.query(Problems). \
+               filter(or_(Problems.serie.like(serie.uid), Problems.serie.like(0))). \
+               order_by(Problems.uid)
+        return dict(page='list', grid=problems_grid, data=data, request=request, title=serie.title)
 
         
     @expose('devcon.templates.problems.submits_list')

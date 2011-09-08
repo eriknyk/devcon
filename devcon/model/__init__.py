@@ -62,3 +62,5 @@ def init_model(engine):
 from devcon.model.auth import User, Group, Permission
 from devcon.model.problems import Problems
 from devcon.model.submits import Submits
+from devcon.model.results import Results
+from devcon.model.series import Series

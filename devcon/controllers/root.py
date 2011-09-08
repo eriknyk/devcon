@@ -10,14 +10,11 @@ from repoze.what import predicates
 from devcon.lib.base import BaseController
 from devcon.model import DBSession, metadata
 from devcon import model
+
 from devcon.controllers.secure import SecureController
-
 from devcon.controllers.error import ErrorController
-
-
-
 from devcon.controllers.problems import ProblemsController
-
+from devcon.controllers.results import ResultsController
 
 
 __all__ = ['RootController']
@@ -41,6 +38,7 @@ class RootController(BaseController):
 
     admin = AdminController(model, DBSession, config_type=TGAdminConfig)
     problems = ProblemsController()
+    results = ResultsController()
 
     error = ErrorController()
 
