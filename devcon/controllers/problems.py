@@ -260,7 +260,7 @@ class ProblemsController(BaseController):
             if ok == 1:
                 flash('Congratulations, your solution was accepted')
             else:
-                flash('Sorry, wrong answer', 'error')
+                flash('Sorry, someting was wrong', 'error')
             
             redirect('/problems/submits_list')
             #return dict(filename=filename, filesize=filesize, problem=problem)
