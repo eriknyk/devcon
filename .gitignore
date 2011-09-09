@@ -3,4 +3,5 @@
 *.swp
 *.pyc*
 devcon/public/files/*
+development.ini
 

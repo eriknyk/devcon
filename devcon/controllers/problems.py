@@ -105,7 +105,17 @@ class ProblemsController(BaseController):
     @expose('devcon.templates.problems.submits_list')
     @paginate("data", items_per_page=15)
     def submits_list(self, **kw):
-        data = DBSession.query(Submits) #.order_by(desc(Submits.datetime))
+
+        # getting the current serie of contest
+        serie = DBSession.query(Series).filter_by(current=1)
+        try:
+            serie_num = serie.one().uid
+            title = serie.one().title
+        except:
+            serie_num = 0
+            title = 'There is not a active contest'
+
+        data = DBSession.query(Submits).filter_by(serie=serie_num)
         
         ordering = kw.get('ordercol')
         if ordering and ordering[0] == '+':
@@ -115,7 +125,7 @@ class ProblemsController(BaseController):
         else:
             data = data.order_by(desc(Submits.datetime))
         
-        return dict(page='submits_list', grid=submits_grid, data=data, request=request)
+        return dict(page='submits_list', grid=submits_grid, data=data, request=request, title=title)
 
 
     @expose('devcon.templates.problems.view')
