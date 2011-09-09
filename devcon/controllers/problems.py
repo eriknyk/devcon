@@ -202,7 +202,7 @@ class ProblemsController(BaseController):
             outputfile_path = os.path.join(os.getcwd(), 'devcon/public/files/outputs', output_filename)
             tmp_filepath = os.path.join(user_serie_dir, gen_output_filename)
             
-            cmd = "%s < %s > %s" % (filepath, inputfile_path, tmp_filepath)
+            cmd = "php -f %s < %s > %s" % (filepath, inputfile_path, tmp_filepath)
 
             excution_res = os.system(cmd)
             os.chmod(tmp_filepath, stat.S_IRWXU)
