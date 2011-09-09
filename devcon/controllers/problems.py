@@ -49,6 +49,7 @@ problems_grid = DataGrid(fields=[
     ('Title', 'title'),
     ('Date', 'date'),
     ('Topic', 'topic'),
+    ('Points', 'points'),
     ('', lambda obj:genshi.Markup('<a href="%s">view</a>' % url('/problems/view', params=dict(uid=obj.uid))))
 ])
 
