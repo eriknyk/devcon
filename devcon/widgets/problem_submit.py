@@ -9,7 +9,7 @@ class ProblemSubmitForm(TableForm):
 
     class fields(WidgetsList):
         uid = HiddenField()
-        Comment = TextField()
+        Comments = TextArea(rows=3)
         file_source = FileField(validator=NotEmpty, required=True)
 
 

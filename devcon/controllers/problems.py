@@ -76,17 +76,25 @@ class ProblemsController(BaseController):
     @expose('devcon.templates.problems.list')
     def list(self):
         # getting the current serie of contest
-        serie = DBSession.query(Series).filter_by(current=1).one()
-
+        serie = DBSession.query(Series).filter_by(current=1)
+        
+        try:
+            uid = serie.one().uid
+            title = serie.one().title
+        except:
+            uid = 0
+            title = 'There is not a active contest'
+        
         data = DBSession.query(Problems). \
-               filter(or_(Problems.serie.like(serie.uid), Problems.serie.like(0))). \
+               filter(or_(Problems.serie.like(uid), Problems.serie.like(0))). \
                order_by(Problems.uid)
-        return dict(page='list', grid=problems_grid, data=data, request=request, title=serie.title)
+        
+        return dict(page='list', grid=problems_grid, data=data, request=request, title=title)
 
         
     @expose('devcon.templates.problems.submits_list')
-    @paginate("data", items_per_page=10)
-    def submits_list(self, **kw):   
+    @paginate("data", items_per_page=15)
+    def submits_list(self, **kw):
         data = DBSession.query(Submits) #.order_by(desc(Submits.datetime))
         
         ordering = kw.get('ordercol')
@@ -117,6 +125,8 @@ class ProblemsController(BaseController):
     #@validate(create_submit_form, error_handler=submit)
     def save(self, **kw):
         if kw['file_source'] != '':
+            problem = DBSession.query(Problems).filter_by(uid=kw['uid']).one()
+            
             """ saving the file """
             file = request.POST['file_source']
             asset_dirname = os.path.join(os.getcwd(), 'devcon/public/files')
@@ -127,16 +137,15 @@ class ProblemsController(BaseController):
             if not os.path.isdir(path):
                 os.mkdir(path)
             
-            filepath = os.path.join(path, file.filename.lstrip(os.sep))
+            submit_filename = "%s_%d" % (file.filename.lstrip(os.sep), problem.serie)
+            filepath = os.path.join(path, submit_filename)
             
             permanent_file = open(filepath, 'w')
             shutil.copyfileobj(file.file, permanent_file)
             
-            problem = DBSession.query(Problems).filter_by(uid=kw['uid']).one()
-            
             filename = file.filename
             filesize = os.path.getsize(os.path.join(path, file.filename.lstrip(os.sep)))
-            filesize = filesize / 1024      
+            filesize = filesize / 1024
             filesize = "%d Kb" % (filesize, )
             
             file.file.close()
@@ -153,10 +162,10 @@ class ProblemsController(BaseController):
             else:
                 attempt_nro = 1
             
-            
-            inputfile_path = os.path.join(os.getcwd(), 'devcon/public/files/inputs', problem.input_filename)
-            output_filename = "%s_%d.out" % (problem.code.lower(), problem.serie) 
-            gen_output_filename = "%s_%d_%d.out" % (problem.code.lower(), problem.serie, attempt_nro) 
+            filename = "%s_%d" % (problem.code.lower(), problem.serie)
+            inputfile_path = os.path.join(os.getcwd(), 'devcon/public/files/inputs', filename + '.in')
+            output_filename = filename + '.out' 
+            gen_output_filename = "%s_%d.out" % (filename, attempt_nro) 
             outputfile_path = os.path.join(os.getcwd(), 'devcon/public/files/outputs', output_filename)
             tmp_filepath = os.path.join(path, gen_output_filename)
             
@@ -206,13 +215,14 @@ class ProblemsController(BaseController):
             _submit.output_filename = gen_output_filename
             _submit.attempt = attempt_nro
             _submit.result = result
+            _submit.comments = kw['comments']
             _submit.accepted = ok
             DBSession.add(_submit)
             
             if ok == 1:
                 flash('Congratulations, your solution was accepted')
             else:
-                flash('Sorry, your solution was rejected', 'error')
+                flash('Sorry, wrong answer', 'error')
             
             redirect('/problems/submits_list')
             #return dict(filename=filename, filesize=filesize, problem=problem)
@@ -225,11 +235,12 @@ class ProblemsController(BaseController):
     def getInput(self, uid):
         problem = DBSession.query(Problems).filter_by(uid=uid).one()
         path = os.path.join(os.getcwd(), 'devcon/public/files/inputs')
-        file = open(os.path.join(path, problem.input_filename), 'r')
+        input_filename = "%s_%s.in" % (problem.code.lower(), problem.serie)
+        file = open(os.path.join(path, input_filename), 'r')
         
         response.headers['Content-Type'] = "text/plain"
-        response.headers['Content-Length'] = os.path.getsize(os.path.join(path, problem.input_filename)) # file size in bytes
-        response.headers['Content-Disposition'] = 'attachment; filename="'+problem.input_filename+'"'
+        response.headers['Content-Length'] = os.path.getsize(os.path.join(path, input_filename))
+        response.headers['Content-Disposition'] = 'attachment; filename="'+input_filename+'"'
 
         data = file.readlines()
         file.close()

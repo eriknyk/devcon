@@ -14,5 +14,6 @@ class Submits(DeclarativeBase):
     filename = Column(Unicode(255))
     output_filename = Column(Unicode(255))
     result = Column(Unicode(255))
+    comments = Column(Unicode(255))
     accepted = Column(Integer)
     

@@ -6,6 +6,7 @@ from tg import config
 from devcon import model
 
 import transaction
+import datetime
 
 
 def bootstrap(command, conf, vars):
@@ -45,6 +46,29 @@ def bootstrap(command, conf, vars):
     
         model.DBSession.add(u1)                    
     
+        pr1 = model.Problems()
+        pr1.code = 'X'
+        pr1.title = 'A + B Problem'
+        pr1.text = 'Calculate a+b'
+        pr1.input = """The input will consist of a set of pairs of values for a and b. (Two integer a,b (0<=a,b<=10))
+Input is terminated with a case where a = 0. This case should not be processed."""
+        pr1.sample_input = """1 2
+5 20
+21 10
+0"""
+        pr1.output = 'Output a+b '
+        pr1.sample_output = """3
+25
+31"""
+        pr1.topic = 'testing'
+        pr1.serie = 0
+        pr1.points = 0
+        pr1.lang = 'en'
+        pr1.date = datetime.datetime.today().isoformat()
+        
+        model.DBSession.add(pr1)                    
+        
+        
         model.DBSession.flush()
         transaction.commit()
     except IntegrityError:
