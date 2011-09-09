@@ -252,7 +252,9 @@ class ProblemsController(BaseController):
             _submit.attempt = attempt_nro
             _submit.result = result
             _submit.comments = kw['Comments']
+            _submit.serie = serie_num
             _submit.accepted = ok
+
             DBSession.add(_submit)
             
             if ok == 1:
