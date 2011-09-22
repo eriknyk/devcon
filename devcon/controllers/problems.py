@@ -249,7 +249,7 @@ class ProblemsController(BaseController):
             _submit.problem_title = problem.title
             _submit.datetime = datetime.datetime.today().isoformat()
             _submit.filename = filename
-            _submit.output_filename = gen_output_filename
+            _submit.output_filename = submit_filename
             _submit.attempt = attempt_nro
             _submit.result = result
             _submit.comments = kw['Comments']

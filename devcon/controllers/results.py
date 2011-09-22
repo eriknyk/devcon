@@ -48,20 +48,50 @@ class ResultsController(BaseController):
 
     @expose('devcon.templates.extjs')
     def index(self):
-        rs = DBSession.execute("select * from tg_user")
-        row = rs.fetchone()
         jsfilename = 'results.list'
-        
         return dict(jsfilename=jsfilename, page='results_list')
 
 
     @expose('json')
-    def getList(self):
-        rs = DBSession.execute("select * from tg_user")
+    def getList(self, _dc, page, start, limit):
+        query = """select submits.*, problems.points as problem_points
+from submits 
+inner join tg_user on submits.user_id=tg_user.user_id
+inner join problems on submits.problem_id=problems.uid
+where submits.result='accepted'
+and problems.serie=2
+order by submits.attempt desc"""
 
-        row = rs.fetchall()
+        rs = DBSession.execute(query)
+        rows = rs.fetchall()
         
-        return dict(rows=row)
+        
+        data = []
+        for r in rows:
+            data.append({'user_id':r.user_id, 'username':r.user_name, 'problem_id': r.problem_id, 'problem_title': r.problem_title, 'result': r.result, 'datetime': r.datetime, 'attempt': r.attempt})
+        
+        return dict(rows=data)
+
+    @expose()
+    def get_code(self, user_id, problem_id, attempt):
+        
+        submit = DBSession.query(Submits).filter(Submits.user_id==user_id). \
+                 filter(Submits.problem_id==problem_id).filter(Submits.attempt==attempt).one()
+        problem = DBSession.query(Problems).filter_by(uid=problem_id).one()
+
+        
+        localpath = "devcon/public/files/%s/serie_%d" % (submit.user_name, problem.serie)
+        path = os.path.join(os.getcwd(), localpath)
+
+        file = open(os.path.join(path, submit.output_filename), 'r')
+        
+        response.headers['Content-Type'] = "text/plain"
 
 
+        data = file.readlines()
+        file.close()
+        
+        return "".join(data[-500:])
+      
+  
 
