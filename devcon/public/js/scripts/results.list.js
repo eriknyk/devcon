@@ -103,14 +103,17 @@ function showCode(user_id, problem_id, attempt)
         width: 600,
         height: 500,
         plain: true,
-        headerPosition: 'left',
+        //headerPosition: 'left',
+        closeable: true,
+        maximizable: true,
         layout: 'fit',
         items: [
           {
             xtype : "component",
             autoEl : {
                 tag : "iframe",
-                src : "results/get_code?user_id="+user_id+"&problem_id="+problem_id+"&attempt="+attempt
+                //src : "results/get_code?user_id="+user_id+"&problem_id="+problem_id+"&attempt="+attempt
+                src:"http://192.168.1.42:8080/results/get_code?user_id="+user_id+"&problem_id="+problem_id+"&attempt="+attempt
             }
 
           }

@@ -38,6 +38,10 @@ from tg import tmpl_context
 from devcon.widgets.movie_form import create_movie_form
 from devcon.widgets.problem_submit import create_submit_form
 
+from pygments import highlight
+from pygments.lexers import PythonLexer
+from pygments.formatters import HtmlFormatter
+from pygments.lexers import get_lexer_by_name
 
 class ResultsController(BaseController):
     secc = SecureController()
@@ -102,15 +106,24 @@ order by submits.attempt desc"""
         localpath = "devcon/public/files/%s/serie_%d" % (submit.user_name, problem.serie)
         path = os.path.join(os.getcwd(), localpath)
 
-        file = open(os.path.join(path, submit.output_filename), 'r')
+        file = open(os.path.join(path, submit.submit_filename), 'r')
         
-        response.headers['Content-Type'] = "text/plain"
-
-
+        response.headers['Content-Type'] = "text/html"
+		
         data = file.readlines()
+        data = "".join(data[-500:])
+        
+        phplexer = get_lexer_by_name("php", stripall=True)
+        formatter = HtmlFormatter(linenos=True, cssclass="source")
+
+        data = highlight(data, phplexer, formatter)
         file.close()
         
-        return "".join(data[-500:])
+        data = '<style>'+ HtmlFormatter().get_style_defs('.highlight') +'</style>' + '<div class="highlight">'+data+'</div>'
+        return data
       
-  
+    @expose('devcon.templates.results.codeview')
+    def code(self, user_id, problem_id, attempt):
+        return dict(user_id=user_id, problem_id=problem_id, attempt=attempt)
+        
 

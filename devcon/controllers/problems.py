@@ -195,6 +195,8 @@ class ProblemsController(BaseController):
                 os.mkdir(user_dir)
             if not os.path.isdir(user_serie_dir):
                 os.mkdir(user_serie_dir)
+               
+            uploaded_filename = file.filename
             
             submit_filename = "%s_%d_%d.php" % (file.filename.lstrip(os.sep).replace('.php', ''), problem.serie, attempt_nro)
             filepath = os.path.join(user_serie_dir, submit_filename)
@@ -263,8 +265,9 @@ class ProblemsController(BaseController):
             _submit.user_name = request.identity['user'].user_name
             _submit.problem_title = problem.title
             _submit.datetime = datetime.datetime.today().isoformat()
-            _submit.filename = filename
-            _submit.output_filename = submit_filename
+            _submit.filename = uploaded_filename
+            _submit.output_filename = gen_output_filename
+            _submit.submit_filename = submit_filename
             _submit.attempt = attempt_nro
             _submit.result = result
             _submit.comments = kw['Comments']

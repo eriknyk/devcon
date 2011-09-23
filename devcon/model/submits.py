@@ -13,6 +13,7 @@ class Submits(DeclarativeBase):
     attempt = Column(Integer, primary_key=True)
     filename = Column(Unicode(255))
     output_filename = Column(Unicode(255))
+    submit_filename = Column(Unicode(255))
     result = Column(Unicode(255))
     comments = Column(Unicode(255))
     serie = Column(Integer)
