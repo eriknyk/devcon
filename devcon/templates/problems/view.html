@@ -41,7 +41,10 @@
 
   <br/>
   <br/>
-  <a href="/problems/getInput?uid=${problem.uid}">Download input</a> | <a href="/problems/submit?uid=${problem.uid}">Submit Solution</a>
+  <a href="/problems/getInput?uid=${problem.uid}">Download input</a> | 
+  <py:if test="can_submit">
+    <a href="/problems/submit?uid=${problem.uid}">Submit Solution</a>
+  </py:if>
 </div>
 <br/>
 

@@ -131,8 +131,23 @@ class ProblemsController(BaseController):
 
     @expose('devcon.templates.problems.view')
     def view(self, uid):
+        serie = DBSession.query(Series).filter_by(current=1)
+        try:
+            serie = serie.one()
+            serie_num = serie.uid
+            title = serie.title
+            if serie.status == 'open':
+                can_submit = 1
+            else:
+                can_submit = 0
+        except:
+            serie_num = 0
+            can_submit = 0
+            title = 'There is not a active contest'
+        
         problem = DBSession.query(Problems).filter_by(uid=uid).one()
-        return dict(page='view', problem=problem)
+        
+        return dict(page='view', problem=problem, can_submit=can_submit)
 
         
     @expose('devcon.templates.problems.submit_form')

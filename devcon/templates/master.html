@@ -33,7 +33,7 @@
         <li py:if="request.identity" id="pl"><a href="${tg.url('/problems/list')}" class="${('', 'active')[defined('page') and page=='list']}">Problem Set</a></li> 
         <li py:if="request.identity" id="pl"><a href="${tg.url('/problems/submits_list')}" class="${('', 'active')[defined('page') and page=='submits_list']}">Submits</a></li> 
 
-        <!--<li py:if="request.identity" id="pl"><a href="${tg.url('/results')}" class="${('', 'active')[defined('page') and page=='results_list']}">Results</a></li> -->
+        <li py:if="request.identity" id="pl"><a href="${tg.url('/results')}" class="${('', 'active')[defined('page') and page=='results_list']}">Results</a></li>
         
         <li py:if="not request.identity" id="login" class="loginlogout"><a href="${tg.url('/login')}">Login</a></li>
         <li py:if="request.identity" id="login" class="loginlogout"><a href="${tg.url('/logout_handler')}">Logout</a></li>

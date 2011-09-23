@@ -9,3 +9,4 @@ class Series(DeclarativeBase):
     title = Column(Unicode(255))
     date = Column(Date())
     current = Column(Integer)
+    status = Column(Unicode(32))

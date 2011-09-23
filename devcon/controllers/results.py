@@ -18,7 +18,7 @@ from tgext.admin.controller import AdminController
 from repoze.what import predicates
 
 from devcon.lib.base import BaseController
-from devcon.model import DBSession, metadata, Problems, Submits
+from devcon.model import DBSession, metadata, Problems, Submits, Series
 from devcon import model
 from devcon.controllers.secure import SecureController
 from tg.decorators import paginate
@@ -48,8 +48,27 @@ class ResultsController(BaseController):
 
     @expose('devcon.templates.extjs')
     def index(self):
-        jsfilename = 'results.list'
-        return dict(jsfilename=jsfilename, page='results_list')
+        # getting the current serie of contest
+        serie = DBSession.query(Series).filter_by(current=1)
+        try:
+            serie = serie.one()
+            serie_num = serie.uid
+            title = serie.title
+        except:
+            serie_num = 0
+            title = 'There is not a active contest'
+        
+        if serie_num == 0:
+            flash(_('There is not a active contest serie'), 'warning')
+            jsfilename = ''
+        else:
+            if serie.status == 'finished':
+                jsfilename = 'results.list'
+            else:
+                flash(_('The content '+title+' is active yet'), 'warning')
+                jsfilename = ''
+       
+        return dict(jsfilename=jsfilename, page='results_list', title=title)
 
 
     @expose('json')
