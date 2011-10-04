@@ -77,14 +77,24 @@ class ResultsController(BaseController):
 
     @expose('json')
     def getList(self, _dc, page, start, limit):
+        serie = DBSession.query(Series).filter_by(current=1)
+        try:
+            serie = serie.one()
+            serie_num = serie.uid
+            title = serie.title
+        except:
+            serie_num = 0
+            title = 'There is not a active contest'
+            
         query = """select submits.*, problems.points as problem_points
 from submits 
 inner join tg_user on submits.user_id=tg_user.user_id
 inner join problems on submits.problem_id=problems.uid
 where submits.result='accepted'
-and problems.serie=2
+and problems.serie=""" + serie_num +  """
 order by submits.attempt desc"""
 
+        return str(query);
         rs = DBSession.execute(query)
         rows = rs.fetchall()
         
