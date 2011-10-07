@@ -86,13 +86,14 @@ class ResultsController(BaseController):
             serie_num = 0
             title = 'There is not a active contest'
             
-        query = """select submits.*, problems.points as problem_points
-from submits 
-inner join tg_user on submits.user_id=tg_user.user_id
-inner join problems on submits.problem_id=problems.uid
-where submits.result='accepted'
-and problems.serie=""" + str(serie_num) +  """
-order by submits.attempt desc"""
+        query = """SELECT submits.*, problems.points as problem_points, count(submits.user_name) as num
+FROM submits 
+INNER JOIN tg_user on submits.user_id=tg_user.user_id
+INNER JOIN problems on submits.problem_id=problems.uid
+WHERE submits.result='accepted'
+AND problems.serie=""" + str(serie_num) +  """
+GROUP BY submits.problem_id, submits.user_name
+ORDER BY num"""
 
         #return str(query);
         rs = DBSession.execute(query)
