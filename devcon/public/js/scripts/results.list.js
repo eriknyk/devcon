@@ -32,12 +32,16 @@ Ext.onReady(function(){
                 type: 'json',
                 root: 'rows'
             }
-        }/*,
-        sorters: {property: 'due', direction: 'ASC'},
-        groupField: 'project'*/
+        },
+        sorters: ['username', 'problem_title','result'],
+        groupField: 'username',
     });
     
-     var grid = Ext.create('Ext.grid.Panel', {
+    var groupingFeature = Ext.create('Ext.grid.feature.Grouping',{
+        groupHeaderTpl: 'User: {name} ({rows.length} Problem{[values.rows.length > 1 ? "s" : ""]})'
+    });
+    
+     var grid = Ext.create('Ext.grid.Panel', {  
         store: store,
         columns: [
             {
@@ -47,8 +51,10 @@ Ext.onReady(function(){
             },
             {
                 header   : 'User', 
-                width    : 80, 
-                dataIndex: 'username'
+                width    : 80,
+                hidden   : true,
+                dataIndex: 'username',
+                flex: 1
             },
             {
                 header   : 'Problem',
@@ -79,17 +85,18 @@ Ext.onReady(function(){
                 }
             }
         ],
-        stripeRows: true,
+//        stripeRows: true,
 //        autoExpandColumn: 'company',
-        //height: 350,
-        autoHeight: true,
+        height: 1000,
+        //autoHeight: true,
         //width: 600,
         autoWidth: true,
-        title: 'Accepted Submits',
+        title: 'Score Board',
         // config options for stateful behavior
-        stateful: true,
-        stateId: 'grid',
-        forceFit: true
+//        stateful: true,
+//        stateId: 'grid',
+        forceFit: true,
+        features: [groupingFeature]
     });
     
 //    grid.store.load();

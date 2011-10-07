@@ -76,7 +76,7 @@ class ResultsController(BaseController):
 
 
     @expose('json')
-    def getList(self, _dc, page, start, limit):
+    def getList(self, _dc, page, start, limit, sort, group):
         serie = DBSession.query(Series).filter_by(current=1)
         try:
             serie = serie.one()
@@ -91,10 +91,10 @@ from submits
 inner join tg_user on submits.user_id=tg_user.user_id
 inner join problems on submits.problem_id=problems.uid
 where submits.result='accepted'
-and problems.serie=""" + serie_num +  """
+and problems.serie=""" + str(serie_num) +  """
 order by submits.attempt desc"""
 
-        return str(query);
+        #return str(query);
         rs = DBSession.execute(query)
         rows = rs.fetchall()
         
